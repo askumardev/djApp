@@ -22,3 +22,24 @@
 - http://127.0.0.1:8000/challenge/january/ or http://127.0.0.1:8000/challenges/january/
 - http://127.0.0.1:8000/challenge/february/ or http://127.0.0.1:8000/challenges/february/
 - http://127.0.0.1:8000/challenge/3/ or http://127.0.0.1:8000/challenges/3/
+
+## Django request / response cycle
+
+1. Browser sends HTTP request
+   - Example: `GET http://127.0.0.1:8000/challenge/`
+2. WSGI/ASGI server receives request
+   - In development, `python manage.py runserver` uses Django’s built-in server
+3. Django creates an `HttpRequest` object
+   - Parses method, path, headers, query parameters, form data, cookies
+4. Middleware `process_request` runs
+   - Middleware can inspect or modify the request before it reaches the view
+5. URL dispatcher matches the path
+   - `urls.py` resolves the URL to the correct view function
+6. View function executes
+   - The view handles logic, database access, templates, or redirects
+7. View returns an `HttpResponse`
+   - Includes status code, headers, and body content
+8. Middleware `process_response` runs
+   - Middleware can modify the response before it is sent back
+9. The server sends the HTTP response back to the browser
+10. Browser renders the response or follows redirects
