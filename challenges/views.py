@@ -37,3 +37,17 @@ def monthly_challenge_by_number(request, month):
         return HttpResponseNotFound("Month number out of range...")
     month = months[month - 1]
     return HttpResponseRedirect(reverse("monthly-challenge", args=[month]))
+
+def index(request):
+    list_items = ""
+    for month in monthly_challenges:
+        month_url = reverse("monthly-challenge", args=[month])
+        list_items += f"<li><a href=\"{month_url}\">{month.capitalize()}</a></li>\n"
+
+    data = f"""
+    <h1>Monthly Challenges</h1>
+    <ul>
+        {list_items}
+    </ul>
+    """
+    return HttpResponse(data)
