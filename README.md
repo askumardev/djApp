@@ -34,9 +34,18 @@
 4. Middleware `process_request` runs
    - Middleware can inspect or modify the request before it reaches the view
 5. URL dispatcher matches the path
-   - `urls.py` resolves the URL to the correct view function
+   - Django starts with the project `urls.py` and follows any included URLconfs
+   - The matched pattern may capture path parameters like `<str:month>` or `<int:month>`
+   - Those parameters are passed into the view as function arguments
+   - If no route matches, Django returns a 404 response
 6. View function executes
-   - The view handles logic, database access, templates, or redirects
+   - The view receives `request` plus any URL parameters
+   - It can read query data, use models, render templates, redirect, or return errors
+   - In this app, `monthly_challenge` looks up the month text and returns it
+   - `monthly_challenge_by_number` converts a number to a month name and redirects
+   - The view can also use `reverse()` to build URLs from named routes
+     - Example: `reverse('monthly-challenge', args=['january'])`
+     - This keeps links stable even if URL patterns change
 7. View returns an `HttpResponse`
    - Includes status code, headers, and body content
 8. Middleware `process_response` runs
