@@ -23,6 +23,22 @@
 - http://127.0.0.1:8000/challenge/february/ or http://127.0.0.1:8000/challenges/february/
 - http://127.0.0.1:8000/challenge/3/ or http://127.0.0.1:8000/challenges/3/
 
+## How URL routing works in this project
+
+1. Django starts with the project URL config in `djApp/urls.py`.
+   - That file defines higher-level routes like `challenge/` and `challenges/`.
+   - It includes the app URL config using `include('challenges.urls')`.
+2. When the path begins with `challenge/` or `challenges/`, Django strips that prefix and continues routing inside `challenges/urls.py`.
+   - Example: request to `/challenge/february/` is routed to `challenges/urls.py` with `february/` remaining.
+3. `challenges/urls.py` defines the app-level routes:
+   - `''` matches the index page at `/challenge/` or `/challenges/`.
+   - `'<int:month>/'` matches numeric URLs like `/challenge/3/`.
+   - `'<str:month>/'` matches named month URLs like `/challenge/february/`.
+4. The app URL patterns call the corresponding view in `challenges/views.py`.
+   - `index` renders the challenge list page.
+   - `monthly_challenge_by_number` redirects numbers to month names.
+   - `monthly_challenge` returns the text for the requested month.
+
 ## Django request / response cycle
 
 1. Browser sends HTTP request
