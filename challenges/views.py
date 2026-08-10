@@ -25,6 +25,13 @@ monthly_challenges = {
 # def any_month(request):
 #     return HttpResponse("Hello Any Month...")
 
+def index(request):
+    list_items = ""
+    months = list(monthly_challenges.keys())
+    return render(request, "challenges/index.html", {
+        "months": months
+    })
+
 def monthly_challenge(request, month):
     try:
         text = monthly_challenges[month]
